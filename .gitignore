@@ -1,0 +1,8 @@
+__pycache__/**
+work/**
+nextflow_testing/**
+results/**
+example_data/**
+unit_testing/**
+.nextflow.log*
+.nextflow/**

@@ -71,3 +71,14 @@ spatial_model.train(max_epochs = 10000)
 spatial_model.history["elbo_train"][10:].plot()
 
 spatial_model.get_proportions().to_csv(output_path + '/Stereoscope_result.txt')
+st_adata.obsm["deconvolution"] = spatial_model.get_proportions()
+
+ct_list= st_adata.obsm["deconvolution"].columns.tolist()
+for ct in ct_list:
+  data = st_adata.obsm["deconvolution"][ct].values
+  st_adata.obs[ct] = np.clip(data, 0, np.quantile(data, 0.99))
+
+plt.rcParams["figure.figsize"] = (8, 8)
+sc.settings.figdir = output_path + '/figures'
+sc.pl.embedding(st_adata, basis="spatial", color=ct_list, cmap="Reds",s=80,
+              save_fig="_Stereoscope_spatial.jpg")

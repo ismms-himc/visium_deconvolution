@@ -67,4 +67,14 @@ scvi.model.DestVI.setup_anndata(st_adata, layer="counts")
 st_model = DestVI.from_rna_model(st_adata, sc_model)
 st_model.train(max_epochs=2500)
 st_model.history["elbo_train"].plot()
+plot.savefig(output_path + '/DestVI_elbow.png')
 st_model.get_proportions().to_csv(output_path + '/DestVI_result.txt')
+st_adata.obsm["proportions"] = st_model.get_proportions()
+ct_list = st_adata.obsm["proportions"].columns.tolist()
+for ct in ct_list:
+  data = st_adata.obsm["proportions"][ct].values
+  st_adata.obs[ct] = np.clip(data, 0, np.quantile(data, 0.99))
+plt.rcParams["figure.figsize"] = (8, 8)
+sc.settings.figdir = output_path + '/figures'
+sc.pl.embedding(st_adata, basis="spatial", color=ct_list, cmap="Reds", s=80,
+    save_fig="_DestVI_spatial.jpg")

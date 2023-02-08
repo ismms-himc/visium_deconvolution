@@ -52,7 +52,7 @@ bsub_gpu 42722_destvi \
 "
 ml singularity;
 
-singularity exec --nv \
+    singularity exec --nv \
 /sc/arion/projects/HIMC/singularity_images/sp_destvi_latest.sif \
 python \
 bin/DestVI_pipeline.py \

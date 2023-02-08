@@ -36,8 +36,12 @@ print(sc.__version__)
 print(str(sc))
 adata_snrna_raw = sc.read_h5ad(sc_file_path)
 print(adata_snrna_raw)
+
+# Remove low expressing genes in Visium Data
+# See 2D https://cell2location.readthedocs.io/en/latest/commonerrors.html
 adata_vis = sc.read_visium(spatial_file_path)
 adata_vis.var_names_make_unique()
+
 
 #adata_snrna_raw.X = csr_matrix(adata_snrna_raw.X)
 #if phf.check_nonnegative_integers(adata_snrna_raw.X):

@@ -9,6 +9,7 @@ import sys
 import os
 
 import python_helper_functions as phf
+import matplotlib.pyplot as plt
 
 scrna_path = sys.argv[1]
 spatial_path = sys.argv[2]
@@ -67,8 +68,10 @@ scvi.model.DestVI.setup_anndata(st_adata, layer="counts")
 st_model = DestVI.from_rna_model(st_adata, sc_model)
 st_model.train(max_epochs=2500)
 st_model.history["elbo_train"].plot()
-plot.savefig(output_path + '/DestVI_elbow.png')
+#plot.savefig(output_path + '/DestVI_elbow.png')
 st_model.get_proportions().to_csv(output_path + '/DestVI_result.txt')
+
+# plot proportions
 st_adata.obsm["proportions"] = st_model.get_proportions()
 ct_list = st_adata.obsm["proportions"].columns.tolist()
 for ct in ct_list:
@@ -77,4 +80,4 @@ for ct in ct_list:
 plt.rcParams["figure.figsize"] = (8, 8)
 sc.settings.figdir = output_path + '/figures'
 sc.pl.embedding(st_adata, basis="spatial", color=ct_list, cmap="Reds", s=80,
-    save_fig="_DestVI_spatial.jpg")
+    save="_DestVI_spatial_proportions.pdf")

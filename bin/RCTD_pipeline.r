@@ -5,16 +5,24 @@ library(Matrix)
 library(data.table)
 library(Seurat)
 library(SeuratDisk)
+library(ggplot2)
 
 args<-commandArgs(T)
 snrna_path = args[1]
 spatial_path = args[2]
 celltype_final = args[3]
 output_path = args[4]
+is_test = args[5]
 
 #sc_obj <- LoadH5Seurat(snrna_path)
 create_output_dir(output_path)
+output_path_figs <- paste0(output_path,'/figures/')
+create_output_dir(output_path_figs)
 spatial_obj <- load_spatial(spatial_path)
+if (!is.na(is_test)) {
+  spatial_obj <- downsample(spatial_obj, 0.1)
+}
+
 assay_name <- get_assay_name(spatial_obj)
 spatial_obj <- filter_sp_barcodes(spatial_obj, assay_name)
 
@@ -69,7 +77,16 @@ myRCTD <- create.RCTD(puck, reference, max_cores = 8)
 myRCTD <- run.RCTD(myRCTD, doublet_mode = 'full')
 results <- myRCTD@results
 # normalize the cell type proportions to sum to 1.
-norm_weights = sweep(results$weights, 1, rowSums(results$weights), '/') 
+#norm_weights = sweep(results$weights, 1, rowSums(results$weights), '/')
+weights <- myRCTD@results$weights
+norm_weights <- normalize_weights(weights)
 cell_type_names <- myRCTD@cell_type_info$info[[2]] #list of cell type names
 spatialRNA <- myRCTD@spatialRNA
 write.csv(norm_weights, paste0(output_path, '/RCTD_result.txt'))
+
+
+#plot
+#barcodes <- colnames(myRCTD@spatialRNA@counts)
+#plot_puck_continuous(myRCTD@spatialRNA, barcodes, norm_weights[,'Denate'], ylimit = c(0,0.5), 
+#                     title ='plot of Dentate weights') # plot Dentate weights
+#ggsave(paste0(output_path_figs, '/RCTD_Dentate weights.pdf'))

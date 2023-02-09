@@ -34,3 +34,8 @@ load_scref <- function(scrna_path) {
   }
   return(sc)
 }
+
+downsample <- function(seurat_object, prop=0.1) {
+  seurat_object <- subset(seurat_object, cells = sample(Cells(seurat_object), prop*ncol(seurat_object)))
+  return(seurat_object)
+}

@@ -15,10 +15,17 @@ scrna_path = sys.argv[1]
 spatial_path = sys.argv[2]
 celltype_key = sys.argv[3]
 output_path = sys.argv[4]
+is_test = sys.argv[5]
 
-sc_adata = sc.read_h5ad(scrna_path)
 st_adata = sc.read_visium(spatial_path)
 st_adata.var_names_make_unique()
+if is_test != "False":
+  print('Downsampling for testing')
+  st_adata = phf.downsample(st_adata)
+
+
+sc_adata = sc.read_h5ad(scrna_path)
+sc_adata = phf.get_raw_counts(sc_adata)
 
 # filter low celltype counts
 celltype_counts = sc_adata.obs[celltype_key].value_counts()
@@ -37,8 +44,6 @@ G = len(intersect)
 # let us filter some genes
 G = 2000
 sc.pp.filter_genes(sc_adata, min_counts=10)
-
-sc_adata = phf.get_raw_counts(sc_adata)
 
 sc.pp.highly_variable_genes(
     sc_adata,

@@ -4,15 +4,13 @@
 import scanpy as sc
 import numpy as np
 import pandas as pd
-
 import scvi
 from scvi.external import RNAStereoscope, SpatialStereoscope
-
 import python_helper_functions as phf
-
 import sys
-
 import os
+import matplotlib.pyplot as plt
+
 np.random.seed()
 def get_freer_gpu():
     os.system('nvidia-smi -q -d Memory |grep -A4 GPU|grep Free >tmp')
@@ -26,19 +24,24 @@ scrna_path = sys.argv[1]
 spatial_path = sys.argv[2]
 celltype_key = sys.argv[3]
 output_path = sys.argv[4]
+is_test = sys.argv[5]
 
-sc_adata = sc.read_h5ad(scrna_path)
 st_adata = sc.read_visium(spatial_path)
 st_adata.var_names_make_unique()
+if is_test != "False":
+  print('Downsampling for testing')
+  st_adata = phf.downsample(st_adata)
+
+sc_adata = sc.read_h5ad(scrna_path)
+
+# Pull out raw data and not log transformed normalized data
+sc_adata = phf.get_raw_counts(sc_adata)
 
 sc.pp.filter_genes(sc_adata, min_counts = 10)
 sc.pp.filter_cells(sc_adata, min_counts = 10)
 
 non_mito_genes_list = [name for name in sc_adata.var_names if not name.startswith('MT-')]
 sc_adata = sc_adata[:, non_mito_genes_list]
-
-# Pull out raw data and not log transformed normalized data
-sc_adata = phf.get_raw_counts(sc_adata)
 
 sc.pp.normalize_total(sc_adata, target_sum = 1e5)
 sc.pp.log1p(sc_adata)
@@ -68,6 +71,7 @@ SpatialStereoscope.setup_anndata(st_adata, layer="counts")
 
 spatial_model = SpatialStereoscope.from_rna_model(st_adata, stereo_sc_model)
 spatial_model.train(max_epochs = 10000)
+#spatial_model.train(max_epochs = 100)
 spatial_model.history["elbo_train"][10:].plot()
 
 spatial_model.get_proportions().to_csv(output_path + '/Stereoscope_result.txt')
@@ -81,4 +85,4 @@ for ct in ct_list:
 plt.rcParams["figure.figsize"] = (8, 8)
 sc.settings.figdir = output_path + '/figures'
 sc.pl.embedding(st_adata, basis="spatial", color=ct_list, cmap="Reds",s=80,
-              save_fig="_Stereoscope_spatial.jpg")
+              save="_Stereoscope_spatial_proportions.pdf")

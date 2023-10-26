@@ -40,7 +40,12 @@ for (i in seq_along(unique(sc_obj@meta.data[,celltype_final]))){
 for (i in diff_list){
         sc_obj = sc_obj[,sc_obj@meta.data[,celltype_final]!=i]
     }
+
+# Reference: levels(cell_types) contains a cell type with name containing prohibited character /. Please rename this cell type
+sc_obj@meta.data[,celltype_final] <- gsub("/","_",sc_obj@meta.data[,celltype_final])
+
 sc_obj@meta.data[,celltype_final] <- as.factor(as.character(sc_obj@meta.data[,celltype_final]))
+
 ### Load in/preprocess your data, this might vary based on your file type
 print('prepare data')
 counts <- data.frame(sc_obj@assays$RNA@counts)

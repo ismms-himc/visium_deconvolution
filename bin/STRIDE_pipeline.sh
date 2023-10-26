@@ -8,7 +8,7 @@ dataset=`echo $dir_path | rev | cut -d/ -f1 | rev`
 
 #get celltype path
 mkdir -vp $output_path/STRIDE_out
-python3 bin/STRIDE_pipeline_helper.py \
+python3 /sc/arion/projects/HIMC/nextflow/visium_deconvolution/bin/STRIDE_pipeline_helper.py \
  $scrna_path \
  $spatial_path \
  $celltype_key \

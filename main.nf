@@ -12,7 +12,10 @@ params.c2l_covariates = "None"
 params.c2l_cellsPerSpot = 30
 params.outdir = "."
 params.outdir_final = "$baseDir/nextflow_testing/42722"
-params.tools='cell2location, tangram, seurat, stereoscope, spotlight, destvi, spatialdwls'
+params.tools="cell2location, tangram, seurat, stereoscope, spotlight, destvi, spatialdwls, stride, rctd"
+params.is_test="False"
+myFile = file(params.spatial_h5ad)
+workDir="/sc/arion/projects/HIMC/nextflow/visium_deconvolution/work/" + myFile.getBaseName()
 
 log.info """\
          D E C O N V O L U T I O N   P I P E L I N E    
@@ -108,12 +111,14 @@ process destvi {
     file spatial_h5ad from spatial_h5ad
     val celltype_key from params.celltype_key
     params.outdir
+    params.is_test
     
     when:
     params.tools.contains('destvi')
      
     output:
     path 'DestVI_result.txt' into destvi_ch
+    path 'figures/spatial_DestVI_spatial_proportions.pdf' into destvi_plot_ch
 
     script:
     """
@@ -122,7 +127,8 @@ process destvi {
     $rna_h5ad \
     $spatial_h5ad \
     $celltype_key \
-    $params.outdir
+    $params.outdir \
+    $params.is_test
     """
 }
 
@@ -138,12 +144,14 @@ process stereoscope {
     val celltype_key from params.celltype_key
     params.outdir
     params.tools
+    params.is_test
 
     when:
     params.tools.contains('stereoscope')
      
     output:
     path 'Stereoscope_result.txt' into stereoscope_ch
+    path 'figures/spatial_Stereoscope_spatial_proportions.pdf' into stereoscope_plot_ch
 
     script:
     """
@@ -152,7 +160,8 @@ process stereoscope {
     $rna_h5ad \
     $spatial_h5ad \
     $celltype_key \
-    $params.outdir
+    $params.outdir \
+    $params.is_test
     """
 }
 
@@ -240,6 +249,65 @@ process spatialdwls {
     """
     Rscript \
     $baseDir/bin/SpatialDWLS_pipeline.r \
+    $rna_h5Seurat \
+    $spatial_h5ad \
+    $celltype_key \
+    $params.outdir
+    """
+}
+
+//process stride {
+//    label 'gpu'
+//    errorStrategy 'ignore'
+//    publishDir "$params.outdir_final/", mode: 'copy'
+//
+//    
+//    input:
+//    file rna_h5ad from rna_h5ad
+//    file spatial_h5ad from spatial_h5ad
+//    val celltype_key from params.celltype_key
+//    params.outdir
+//    params.tools
+//
+//    when:
+//    params.tools.contains('stride')
+//     
+//    output:
+//    path 'STRIDE_result.txt' into stride_ch
+//
+//    script:
+//    """
+//    sh $baseDir/bin/STRIDE_pipeline.sh \
+//    $rna_h5ad \
+//    $spatial_h5ad \
+//    $celltype_key \
+//    $params.outdir
+//    """
+//}
+
+process rctd {
+    label 'non_gpu'
+    errorStrategy 'ignore'
+    publishDir "$params.outdir_final/", mode: 'copy'
+
+    
+    input:
+    file rna_h5Seurat from rna_h5Seurat
+    file spatial_h5ad from spatial_h5ad
+    val celltype_key from params.celltype_key
+    params.outdir
+    params.tools
+
+    when:
+    params.tools.contains('rctd')
+     
+    output:
+    path 'RCTD_result.txt' into rctd_ch
+
+    script:
+    """
+    Rscript \
+    $baseDir/bin/RCTD_pipeline.r \
     $rna_h5Seurat \
     $spatial_h5ad \
     $celltype_key \

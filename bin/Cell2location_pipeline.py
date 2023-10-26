@@ -27,7 +27,7 @@ spatial_file_path = sys.argv[2]
 celltype_key = sys.argv[3]
 batch_key = None if sys.argv[4] == 'None' else sys.argv[4]
 categorical_covariate_keys = None if sys.argv[5] == 'None' else [sys.argv[5]] #list
-N_cells_per_location = int(sys.argv[6])
+N_cells_per_location = round(int(float(sys.argv[6])))
 output_file_path = sys.argv[7]
 
 os.makedirs(output_file_path, exist_ok = True)

@@ -1,12 +1,15 @@
+source("/sc/arion/projects/HIMC/nextflow/visium_deconvolution/bin/R_helper_functions.r")
 library(Giotto)
 library(SeuratDisk)
 library(Seurat)
+library(ggplot2)
 
 args<-commandArgs(T)
 scrna_path = args[1]
 spatial_path = args[2]
 celltype_final = args[3]
 output_path = args[4]
+is_test = args[5]
 
 scrna_suf <- strsplit(scrna_path,'\\.')[[1]][-1]
 
@@ -14,6 +17,9 @@ instrs = createGiottoInstructions(python_path = "/usr/bin/python3")
 
 #st <- LoadH5Seurat(spatial_path)
 st <- Load10X_Spatial(spatial_path)
+if (!is.na(is_test)) {
+  st <- downsample(st, 0.1)
+}
 
 if (scrna_suf == 'h5Seurat' || scrna_suf == 'h5seurat')  {
     sc = LoadH5Seurat(scrna_path)
@@ -76,3 +82,15 @@ colnames(Sig_exp)<-unique(id)
 st_data <- runDWLSDeconv(st_data,sign_matrix = Sig_exp, n_cell = 20)
 dir.create(output_path, recursive = TRUE, showWarnings = FALSE)
 write.csv(st_data@spatial_enrichment$DWLS, paste0(output_path, '/SpatialDWLS_result.txt'))
+
+dir.create(paste0(output_path,'/figures'), recursive = TRUE, showWarnings = FALSE)
+# Plot DWLS deconvolution result
+spatCellPlot2D(gobject = st_data,
+               spat_enr_names = 'DWLS',
+               cell_annotation_values = unique(sc_data@cell_metadata$leiden_clus),
+               cow_n_col = 4,
+               coord_fix_ratio = 1,
+               point_size = 1,
+               save_param = list(save_name = "DWLS_plot",
+                                 save_dir = paste0(output_path,'/figures')))
+ggsave(paste0(output_path,'/figures/SpatialDWLS.pdf'))

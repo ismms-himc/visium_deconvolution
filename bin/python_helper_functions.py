@@ -1,4 +1,5 @@
 import numpy as np
+import scanpy as sc
 
 def check_nonnegative_integers(X):
     """
@@ -28,3 +29,7 @@ def get_raw_counts(adata):
       adata.layers["log_counts"] = adata.X.copy()
       adata.X = adata.raw.to_adata().X.copy()
   return adata
+
+def downsample(adata, prop=0.1):
+  adata = sc.pp.subsample(adata, copy=True, fraction=prop)
+  return(adata)

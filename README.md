@@ -1,4 +1,4 @@
-Deconvolution of Visium data using
+Deconvolution of 10x Visium data using the tools below
 * Cell2Location
 * RCTD
 * Stereoscope
@@ -52,5 +52,21 @@ run_Lung.sh
 # batch command can be found here
 run_Lung.cmd
 ```
+
+Notes
+* If want want to test the tool in an interactive session instead of submitting a job, change the config parameter
+```
+-c nextflow_local.config
+```
+* You can use the GPU nodes to run Cell2location
+```
+-c nextflow_c2la100.config
+--tools cell2location
+```
+* Docker images were either created by me or found on DockerHub. Image locations can be viewed in
+```
+-c nextflow.config
+```
+
 
 

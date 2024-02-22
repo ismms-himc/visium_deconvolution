@@ -67,6 +67,7 @@ Notes
 ```
 -c nextflow.config
 ```
+* Repo of Dockerfiles can be found [here](https://github.com/ismms-himc/himc_dockers)
 
 
 

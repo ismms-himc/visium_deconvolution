@@ -1,43 +1,9 @@
-import numpy as np
-import scanpy as sc
 import matplotlib
 import matplotlib.pyplot as plt
-
-def check_nonnegative_integers(X):
-    """
-    Checks values of X to ensure it is count data
-    From scanpy https://github.com/scverse/scanpy/blob/d26be443373549f26226de367f0213f153556915/scanpy/_utils/__init__.py#L487
-    """
-    from numbers import Integral
-
-    data = X if isinstance(X, np.ndarray) else X.data
-    # Check no negatives
-    if np.signbit(data).any():
-        return False
-    # Check all are integers
-    elif issubclass(data.dtype.type, Integral):
-        return True
-    elif np.any(~np.equal(np.mod(data, 1), 0)):
-        return False
-    else:
-        return True
-
-def get_raw_counts(adata):
-  if check_nonnegative_integers(adata.X):
-    adata.layers["counts"] = adata.X.copy()
-  elif adata.raw:
-    if check_nonnegative_integers(adata.raw.to_adata().X):
-      adata.layers["counts"] = adata.raw.to_adata().X.copy()
-      adata.layers["log_counts"] = adata.X.copy()
-      adata.X = adata.raw.to_adata().X.copy()
-  return adata
-
-def downsample(adata, prop=0.1):
-  adata = sc.pp.subsample(adata, copy=True, fraction=prop)
-  return(adata)
+import numpy as np
 
 
-def c2l_filter_genes(adata, cell_count_cutoff=15, cell_percentage_cutoff2=0.05, nonz_mean_cutoff=1.12):
+def filter_genes(adata, cell_count_cutoff=15, cell_percentage_cutoff2=0.05, nonz_mean_cutoff=1.12):
     r"""Plot the gene filter given a set of cutoffs and return resulting list of genes.
 
     Parameters

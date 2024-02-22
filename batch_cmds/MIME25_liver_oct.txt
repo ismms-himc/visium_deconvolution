@@ -1,0 +1,10 @@
+/sc/arion/projects/HIMC/himc-project-data/MIME25/data/10X/MIME25_1003T_0_v1
+/sc/arion/projects/HIMC/himc-project-data/MIME25/data/10X/MIME25_1006T_0_v1
+/sc/arion/projects/HIMC/himc-project-data/MIME25/data/10X/MIME25_1012T_0_v1
+/sc/arion/projects/HIMC/himc-project-data/MIME25/data/10X/MIME25_1037T1_0_v1
+/sc/arion/projects/HIMC/himc-project-data/MIME25/data/10X/MIME25_Human_Li59T_0
+/sc/arion/projects/HIMC/himc-project-data/MIME25/data/10X/MIME25_Human_Li97T_0
+/sc/arion/projects/HIMC/himc-project-data/MIME25/data/10X/MIME25_Li104T_0
+/sc/arion/projects/HIMC/himc-project-data/MIME25/data/10X/MIME25_Li106T_0
+/sc/arion/projects/HIMC/himc-project-data/MIME25/data/10X/MIME25_Li124T_0
+/sc/arion/projects/HIMC/himc-project-data/MIME25/data/10X/MIME25_Li70T_0

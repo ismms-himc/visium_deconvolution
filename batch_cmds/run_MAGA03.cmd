@@ -1,0 +1,89 @@
+(cat << EOF
+MAGA03_1004-25_0_v4
+MAGA03_257-1062_0_v4
+MAGA03_257-1002_rerun_0_v4
+MAGA03_257-1008_rerun_0_v4
+MAGA03_257-1003_0_v2
+MAGA03_257-1006_0_v2
+MAGA03_257-1007_0_v2
+MAGA03_257-1024_0_v2
+MAGA03_257-1029_0_v2
+MAGA03_257-1030_0_v2
+MAGA03_257-1036_0_v2
+MAGA03_257-1052_0_v2
+MAGA03_257-1018_0_v3
+MAGA03_257-1010_0_v3
+MAGA03_257-1018_0_v3
+MAGA03_257-1010_0_v3
+MAGA03_257-1020_0_v2
+MAGA03_257-1022_0_v2
+MAGA03_257-1001_0_v2
+MAGA03_257-1005_0_v2
+MAGA03_257-1013_0_v2
+MAGA03_257-1072_0_v2
+MAGA03_257-1060_0_v3
+MAGA03_257-1054_0_v3
+MAGA03_257-1019_0_v1
+MAGA03_257-1011_0_v1
+EOF
+) |  parallel --dryrun -j1 -k \
+"
+/sc/arion/projects/HIMC/nextflow/visium_deconvolution/batch_cmds/run_MAGA03.sh \
+/sc/arion/projects/HIMC/himc-project-data/MAGA03/data/10X/{}
+"
+
+# new batch
+(cat << EOF
+MAGA03_257-1004Post_0_v1
+MAGA03_257-1062Post_0_v1
+MAGA03_257-1054rerun_0_v1
+MAGA03_257-1008Post_0_v1
+MAGA03_257-1048_0_v1
+EOF
+) |  parallel --dryrun -j1 -k \
+"
+/sc/arion/projects/HIMC/nextflow/visium_deconvolution/batch_cmds/run_MAGA03.sh \
+/sc/arion/projects/HIMC/himc-project-data/MAGA03/data/10X/{}
+"
+
+# rerunning with new column 
+
+(cat << EOF
+MAGA03_1004-25_0_v4
+MAGA03_257-1062_0_v4
+MAGA03_257-1002_rerun_0_v4
+MAGA03_257-1008_rerun_0_v4
+MAGA03_257-1003_0_v2
+MAGA03_257-1006_0_v2
+MAGA03_257-1007_0_v2
+MAGA03_257-1024_0_v2
+MAGA03_257-1029_0_v2
+MAGA03_257-1030_0_v2
+MAGA03_257-1036_0_v2
+MAGA03_257-1052_0_v2
+MAGA03_257-1018_0_v3
+MAGA03_257-1010_0_v3
+MAGA03_257-1018_0_v3
+MAGA03_257-1010_0_v3
+MAGA03_257-1020_0_v2
+MAGA03_257-1022_0_v2
+MAGA03_257-1001_0_v2
+MAGA03_257-1005_0_v2
+MAGA03_257-1013_0_v2
+MAGA03_257-1072_0_v2
+MAGA03_257-1060_0_v3
+MAGA03_257-1054_0_v3
+MAGA03_257-1019_0_v1
+MAGA03_257-1011_0_v1
+MAGA03_257-1004Post_0_v1
+MAGA03_257-1062Post_0_v1
+MAGA03_257-1054rerun_0_v1
+MAGA03_257-1008Post_0_v1
+MAGA03_257-1048_0_v1
+EOF
+) |  parallel --dryrun -j1 -k \
+"
+/sc/arion/projects/HIMC/nextflow/visium_deconvolution/batch_cmds/run_MAGA03_diffcol.sh \
+/sc/arion/projects/HIMC/himc-project-data/MAGA03/data/10X/{};
+sleep 1
+"

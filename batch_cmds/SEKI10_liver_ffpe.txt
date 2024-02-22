@@ -1,0 +1,3 @@
+/sc/arion/projects/HIMC/himc-project-data/SEKI10/data/10X/SEKI10_Li164_1_v1
+/sc/arion/projects/HIMC/himc-project-data/SEKI10/data/10X/SEKI10_Li204_1_v1
+/sc/arion/projects/HIMC/himc-project-data/SEKI10/data/10X/SEKI10_Li211_1_v1

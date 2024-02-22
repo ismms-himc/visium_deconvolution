@@ -1,0 +1,15 @@
+/sc/arion/projects/HIMC/himc-project-data/SAME09/data/10X/SAME09_IBDUC012_0_v1
+/sc/arion/projects/HIMC/himc-project-data/SAME09/data/10X/SAME09_IBDUC142_0_v1
+/sc/arion/projects/HIMC/himc-project-data/SAME09/data/10X/SAME09_IBDUC142B_0_v1
+/sc/arion/projects/HIMC/himc-project-data/SAME09/data/10X/SAME09_IBDUC144B_0_v1
+/sc/arion/projects/HIMC/himc-project-data/SAME09/data/10X/SAME09_IBDUC147_0_v1
+/sc/arion/projects/HIMC/himc-project-data/SAME09/data/10X/SAME09_IBDUC147B_0_v1
+/sc/arion/projects/HIMC/himc-project-data/SAME09/data/10X/SAME09_IBDUC148B_0_v1
+/sc/arion/projects/HIMC/himc-project-data/SAME09/data/10X/SAME09_IBDUC151_0_v1
+/sc/arion/projects/HIMC/himc-project-data/SAME09/data/10X/SAME09_IBDUC153_0_v1
+/sc/arion/projects/HIMC/himc-project-data/SAME09/data/10X/SAME09_IBDUC154_0_v1
+/sc/arion/projects/HIMC/himc-project-data/SAME09/data/10X/SAME09_IBDUC160_0_v1
+/sc/arion/projects/HIMC/himc-project-data/SAME09/data/10X/SAME09_NV192_0_v2
+/sc/arion/projects/HIMC/himc-project-data/SAME09/data/10X/SAME09_NV196_0_v1
+/sc/arion/projects/HIMC/himc-project-data/SAME09/data/10X/SAME09_NV197_0_v1
+/sc/arion/projects/HIMC/himc-project-data/SAME09/data/10X/SAME09_NV203_0_v2

@@ -2,25 +2,48 @@
 
 import sys
 #sys.path.insert(1, '/opt/conda/envs/cell2loc_env/lib/python3.7/site-packages')
-import scanpy as sc
-import anndata
+#sys.path.append('/sc/arion/work/dsouzd04/python_libs')
+# if using cell2location-v0.06-alpha.sif, omit minerva user paths... 
+#sys.path = ['', '/opt/conda/envs/cellpymc/lib/python37.zip',
+#     '/opt/conda/envs/cellpymc/lib/python3.7',
+#     '/opt/conda/envs/cellpymc/lib/python3.7/lib-dynload',
+#     '/opt/conda/envs/cellpymc/lib/python3.7/site-packages',
+#     '/sc/arion/projects/HIMC/nextflow/visium_deconvolution/bin']
+#sys.path = ['', 
+#     '/hpc/packages/minerva-centos7/py_packages/3.7/lib/python3.7/site-packages',
+#     '/hpc/packages/minerva-centos7/python/3.7.3/lib/python3.7/site-packages',
+#     '/opt/conda/envs/cellpymc/lib/python37.zip',
+#     '/opt/conda/envs/cellpymc/lib/python3.7',
+#     '/opt/conda/envs/cellpymc/lib/python3.7/lib-dynload',
+#     '/opt/conda/envs/cellpymc/lib/python3.7/site-packages',
+#     '/sc/arion/projects/HIMC/nextflow/visium_deconvolution/bin']
+#sys.path = ['',
+#     '/hpc/packages/minerva-centos7/py_packages/3.7/lib/python3.7/site-packages',
+#     '/hpc/packages/minerva-centos7/python/3.7.3/lib/python3.7/site-packages',
+#     '/opt/conda/envs/cell2loc_env/lib/python37.zip',
+#     '/opt/conda/envs/cell2loc_env/lib/python3.7',
+#     '/opt/conda/envs/cell2loc_env/lib/python3.7/lib-dynload',
+#     '/opt/conda/envs/cell2loc_env/lib/python3.7/site-packages',
+#     '/sc/arion/projects/HIMC/nextflow/visium_deconvolution/bin']
+import cell2location
+#import scvi
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib as mpl
 import subprocess
-
 import os
-
-import cell2location
-import scvi
-
 from matplotlib import rcParams
 rcParams['pdf.fonttype'] = 42 # enables correct plotting of text
 import seaborn as sns
 from scipy.sparse import csr_matrix
-from cell2location.utils.filtering import filter_genes
+#from cell2location.utils.filtering import filter_genes
+
+# want latest anndata to be able to read new h5ad
+#sys.path.insert(1,'/hpc/users/dsouzd04/.local/lib/python3.7/site-packages')
 import python_helper_functions as phf
+import scanpy as sc
+import anndata
 
 sc_file_path = sys.argv[1]
 spatial_file_path = sys.argv[2]
@@ -71,7 +94,8 @@ sc.pp.filter_cells(adata_snrna_raw,min_genes=1)
 adata_snrna_raw.obs[celltype_key] = pd.Categorical(adata_snrna_raw.obs[celltype_key])
 adata_snrna_raw = adata_snrna_raw[~adata_snrna_raw.obs[celltype_key].isna(), :]
 
-selected = filter_genes(adata_snrna_raw, cell_count_cutoff=5, cell_percentage_cutoff2=0.03, nonz_mean_cutoff=1.12)
+#selected = filter_genes(adata_snrna_raw, cell_count_cutoff=5, cell_percentage_cutoff2=0.03, nonz_mean_cutoff=1.12)
+selected = phf.c2l_filter_genes(adata_snrna_raw, cell_count_cutoff=5, cell_percentage_cutoff2=0.03, nonz_mean_cutoff=1.12)
 #selected.savefig('filter_genes.png')
 
 # filter the object

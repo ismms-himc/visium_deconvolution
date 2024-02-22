@@ -1,0 +1,3 @@
+bsub_premium_single crc_adata2sce "ml R; $HIMC/software/h5ad2rds/h5ad2rds.R /sc/arion/projects/HIMC/collaborations/deconvolution_references/crc/complete_crc_cellranger_QCed_bbknn_annotated_variable_v2_grained_withRaw_JBanno.h5ad"
+
+/sc/arion/projects/HIMC/software/jupyter_debarcoding/projects/HCC/HCC_sce2adata_with39and41_for_conversion.h5seurat

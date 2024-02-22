@@ -9,6 +9,11 @@ Deconvolution of 10x Visium data using the tools below
 * STRIDE
 * SpatialDWLS
 
+Location on Minerva
+
+```
+/sc/arion/projects/HIMC/nextflow/visium_deconvolution
+```
 
 Example usage
 
